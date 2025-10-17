@@ -27,12 +27,12 @@ struct WelcomeView: View {
                         .padding(.top, 100)
                         .padding(.bottom, 180)
                     
-                    NavigationButton(title: "Login", destination: ContentView())
+                    NavigationButton(title: "Login", destination: LoginView())
                     
                     NavigationTextLink(
                         messageText: "Don't have an account?",
                         linkText: "Sign up",
-                        destination: ContentView())
+                        destination: SignUpView())
                 }
             }
         }
