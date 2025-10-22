@@ -18,7 +18,7 @@ struct HomeView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: .infinity)
-                        .padding(.top, -160)
+                        .padding(.top, -155)
                     
                     Text("Emotions are part of God's design \nlistening to them is a strength")
                         .font(.custom("AvenirNext-Bold", size: 20))
