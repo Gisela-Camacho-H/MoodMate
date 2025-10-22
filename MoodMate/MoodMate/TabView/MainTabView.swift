@@ -12,11 +12,11 @@ struct MainTabView: View {
         TabView {
             HomeView()
                 .tabItem {
-                    Label("Home", systemImage: "house.fill")
+                    Label("Home", systemImage: "house")
                 }
             MoodView()
                 .tabItem {
-                    Label("Mood", systemImage: "heart.square.fill")
+                    Label("Mood", systemImage: "apple.meditate")
                 }
             EmotionsView()
                 .tabItem {
@@ -24,11 +24,11 @@ struct MainTabView: View {
                 }
             TrackView()
                 .tabItem {
-                    Label("Track", systemImage: "list.bullet.clipboard.fill")
+                    Label("Track", systemImage: "list.bullet")
                 }
             ProfileView()
                 .tabItem {
-                    Label("Profile", systemImage: "person.circle.fill")
+                    Label("Profile", systemImage: "person")
                 }
         }
         .accentColor(Color("BlueMood"))

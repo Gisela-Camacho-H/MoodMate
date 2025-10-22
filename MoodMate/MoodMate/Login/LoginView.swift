@@ -34,7 +34,7 @@ struct LoginView: View {
                                 .textInputAutocapitalization(.never)
                             
                             SecureField("Password", text: $password)
-                                .modifier(TextFieldMoodMate(iconName: "lock.fill"))
+                                .modifier(TextFieldMoodMate(iconName: "key.horizontal.fill"))
                         }
                         .padding(.horizontal, 20)
                     }

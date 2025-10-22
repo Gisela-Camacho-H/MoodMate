@@ -9,14 +9,12 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        NavigationView {
-            ScrollView {
                 VStack(spacing:20) {
                     Image("Banner")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: .infinity)
-                        .padding(.top, -65)
+                        .padding(.top, -166)
                     
                     Text("Emotions are part of God's design \nlistening to them is a strength")
                         .font(.custom("AvenirNext-Bold", size: 20))
@@ -35,14 +33,13 @@ struct HomeView: View {
                             .foregroundColor(Color("GreenMood"))
                             .padding(.horizontal)
                         
-                        QuoteCardView()
+                        QuoteCardView(
+                            quote: "If you can dream it, you can do it.",
+                            author: "Walt Disney")
                     }
                 }
-                
             }
         }
-    }
-}
 
 #Preview {
     HomeView()

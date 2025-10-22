@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct QuoteCardView: View {
+    let quote: String
+    let author: String
+    
     var body: some View {
         VStack(spacing: 15) {
-            Text("\"If you can dream it, \nyou can do it.\"")
+            Text(quote)
                 .font(.custom("AvenirNext-Bold", size: 20))
                 .foregroundColor(Color("BlueMood"))
                 .multilineTextAlignment(.center)
@@ -18,7 +21,7 @@ struct QuoteCardView: View {
             
             HStack {
                 Spacer()
-                Text("by Walt Disney")
+                Text("by \(author)")
                     .font(.custom("AvenirNext-Bold", size: 20))
                     .foregroundColor(Color("CoralMood"))
             }
@@ -26,7 +29,7 @@ struct QuoteCardView: View {
             .padding(.bottom, 20)
         }
         .frame(maxWidth: .infinity)
-        .background(Color("White"))
+        .background(.white)
         .cornerRadius(10)
         .overlay(
             RoundedRectangle(cornerRadius: 10)

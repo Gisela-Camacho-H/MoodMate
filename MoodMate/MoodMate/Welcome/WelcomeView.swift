@@ -36,6 +36,7 @@ struct WelcomeView: View {
                 }
             }
         }
+        .navigationBarHidden(true)
     }
 }
 
