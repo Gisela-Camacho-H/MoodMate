@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MainTabView: View {
-    @StateObject var tabManager = TabMaganer()
+    
+    @StateObject var tabManager = TabManager()
     var body: some View {
         TabView(selection: $tabManager.selectionTab) {
-            HomeView()
+            HomeView(tabManager: tabManager)
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }

@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct PlusButton<Destination: View>: View {
+struct PlusButton: View {
     let backgroundColor: String
-    let destination: Destination
+    let action: () -> Void
     
     var body: some View {
-        NavigationLink(destination: destination) {
+        Button(action: action) {
             Image(systemName: "plus")
                 .font(.system(size: 28, weight: .bold))
                 .foregroundColor(.white)

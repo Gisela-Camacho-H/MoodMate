@@ -16,6 +16,6 @@ enum TabSelection: String {
     case profile = "Profile"
 }
 
-class TabMaganer: ObservableObject {
+class TabManager: ObservableObject {
     @Published var selectionTab: TabSelection = .home
 }

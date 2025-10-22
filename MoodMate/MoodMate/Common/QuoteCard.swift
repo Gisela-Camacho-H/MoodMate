@@ -7,27 +7,39 @@
 
 import SwiftUI
 
-struct QuoteCardView: View {
-    let quote: String
-    let author: String
+struct QuoteCardHomeView: View {
+    let quote: Quote?
+    let isLoading: Bool
+    
     
     var body: some View {
+        
+        let currentQuote = quote ?? Quote.defaultQuote
+        
         VStack(spacing: 15) {
-            Text(quote)
-                .font(.custom("AvenirNext-Bold", size: 20))
-                .foregroundColor(Color("BlueMood"))
-                .multilineTextAlignment(.center)
-                .padding(.vertical, 25)
             
-            HStack {
-                Spacer()
-                Text("by \(author)")
+            if isLoading {
+                ProgressView()
+                    .padding(.vertical, 30)
+            } else {
+                Text("\"\(currentQuote.content)\"")
                     .font(.custom("AvenirNext-Bold", size: 20))
-                    .foregroundColor(Color("CoralMood"))
+                    .foregroundColor(Color("BlueMood"))
+                    .multilineTextAlignment(.center)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.vertical, 25)
+                
+                HStack {
+                    Spacer()
+                    Text("by \(currentQuote.author)")
+                        .font(.custom("AvenirNext-Bold", size: 20))
+                        .foregroundColor(Color("CoralMood"))
+                }
             }
-            .padding(.trailing, 15)
-            .padding(.bottom, 20)
         }
+        .padding(.vertical, 15)
+        .padding(.horizontal, 25)
         .frame(maxWidth: .infinity)
         .background(.white)
         .cornerRadius(10)
@@ -35,6 +47,6 @@ struct QuoteCardView: View {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color("CoralMood"), lineWidth: 2)
         )
-        .padding(.horizontal, 30)
+        .padding(.horizontal, 20)
     }
 }

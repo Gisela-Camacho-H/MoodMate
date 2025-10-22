@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+    @StateObject private var viewModel = HomeViewModel()
+    @ObservedObject var tabManager: TabManager
+    
     var body: some View {
                 VStack(spacing:20) {
                     Image("Banner")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: .infinity)
-                        .padding(.top, -166)
+                        .padding(.top, -160)
                     
                     Text("Emotions are part of God's design \nlistening to them is a strength")
                         .font(.custom("AvenirNext-Bold", size: 20))
@@ -23,9 +27,13 @@ struct HomeView: View {
                         .padding(.horizontal)
                         .padding(.top, 20)
                     
-                    NavigationButton(title: "Log my mood", destination: WelcomeView())
                     
-                    PlusButton(backgroundColor: "CoralMood", destination: WelcomeView())
+                    ConditionButton(title: "Log my mood",
+                                    action: { tabManager.selectionTab = .mood
+                    })
+                    
+                    PlusButton(backgroundColor: "CoralMood", action: {
+                        tabManager.selectionTab = .mood })
                     
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Quote of the day:")
@@ -33,14 +41,16 @@ struct HomeView: View {
                             .foregroundColor(Color("GreenMood"))
                             .padding(.horizontal)
                         
-                        QuoteCardView(
-                            quote: "If you can dream it, you can do it.",
-                            author: "Walt Disney")
+                        QuoteCardHomeView(
+                            quote: viewModel.quoteOfTheDay,
+                            isLoading: viewModel.isLoading)
                     }
                 }
+                .onAppear { viewModel.fetchQuote() }
             }
         }
 
 #Preview {
-    HomeView()
+    let tabManager = TabManager()
+    HomeView(tabManager: tabManager)
 }
