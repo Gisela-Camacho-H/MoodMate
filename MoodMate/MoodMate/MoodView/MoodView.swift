@@ -77,6 +77,9 @@ struct MoodView: View {
                 UIApplication.shared.endEditing()
             }
         }
+        .fullScreenCover(item: $emotionForFeedback) { emotion in
+            FeedbackView(selectedEmotion: emotion)
+        }
     }
 }
     
