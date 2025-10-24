@@ -18,7 +18,7 @@ struct MainTabView: View {
                     Label("Home", systemImage: "house")
                 }
                 .tag(TabSelection.home)
-            MoodView()
+            MoodView(tabManager: tabManager)
                 .tabItem {
                     Label("Mood", systemImage: "apple.meditate")
                 }
