@@ -1,5 +1,5 @@
 //
-//  ModLogModel.swift
+//  MoodLogModel.swift
 //  MoodMate
 //
 //  Created by Gis Cam on 24/10/25.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct ModLogModel: Identifiable, Decodable {
+struct MoodLogModel: Identifiable, Decodable {
     let id: String
     let emotionName: String
     let note: String?
@@ -22,5 +22,5 @@ struct ModLogModel: Identifiable, Decodable {
     }
 }
 
-typealias MoodTrackResponse = [ModLogModel]
+typealias MoodTrackResponse = [MoodLogModel]
 

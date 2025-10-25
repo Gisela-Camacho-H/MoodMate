@@ -10,13 +10,15 @@ import SwiftUI
 struct PlusButton: View {
     let backgroundColor: String
     let action: () -> Void
+    let size: CGFloat
+    let padding: CGFloat
     
     var body: some View {
         Button(action: action) {
             Image(systemName: "plus")
-                .font(.system(size: 28, weight: .bold))
+                .font(.system(size: size, weight: .bold))
                 .foregroundColor(.white)
-                .padding(15)
+                .padding(padding)
                 .background(Color(backgroundColor))
                 .clipShape(Circle())
                 .shadow(radius: 5)

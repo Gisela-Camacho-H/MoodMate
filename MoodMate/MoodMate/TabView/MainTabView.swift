@@ -28,7 +28,7 @@ struct MainTabView: View {
                     Label("Emotions", systemImage: "face.smiling")
                 }
                 .tag(TabSelection.emotions)
-            TrackView()
+            TrackView(tabManager: tabManager)
                 .tabItem {
                     Label("Track", systemImage: "list.bullet")
                 }

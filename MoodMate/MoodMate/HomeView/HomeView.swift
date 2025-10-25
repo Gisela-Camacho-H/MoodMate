@@ -33,7 +33,7 @@ struct HomeView: View {
                     })
                     
                     PlusButton(backgroundColor: "CoralMood", action: {
-                        tabManager.selectionTab = .mood })
+                        tabManager.selectionTab = .mood }, size: 28, padding: 15)
                     
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Quote of the day:")
