@@ -34,6 +34,7 @@ struct WelcomeView: View {
                         linkText: "Sign up",
                         destination: SignUpView())
                 }
+                .padding(.bottom, 20)
             }
         }
         .navigationBarHidden(true)
