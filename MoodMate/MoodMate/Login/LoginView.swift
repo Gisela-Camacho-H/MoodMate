@@ -14,13 +14,12 @@ import FBSDKLoginKit
 
 struct LoginView: View {
     @State private var email = ""
-    @State private var password : String = ""
+    @State private var password: String = ""
     
     @Environment(\.dismiss) var dismiss
-
     @Environment(AuthController.self) private var authController
     
-    @State private var loginError: Error?
+    @State private var loginError: String?
     @State private var showingAlert = false
     
     private var cardShadow: Color {
@@ -42,7 +41,7 @@ struct LoginView: View {
                                 .modifier(TextFieldMoodMate(iconName: "envelope.fill"))
                                 .keyboardType(.emailAddress)
                                 .textInputAutocapitalization(.never)
-                                
+                            
                             SecureField("Password", text: $password)
                                 .modifier(TextFieldMoodMate(iconName: "key.horizontal.fill"))
                         }
@@ -52,18 +51,40 @@ struct LoginView: View {
                     .frame(width: geometry.size.width * 0.9)
                     .background(.white)
                     .cornerRadius(20)
-                    .shadow(color: cardShadow.opacity(0.3), radius: 10, x:0, y: 5)
-                    .shadow(color: Color.black.opacity(0.15), radius: 5, x:0, y: 5)
+                    .shadow(color: cardShadow.opacity(0.3), radius: 10, x: 0, y: 5)
+                    .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 5)
+                    
 
-                    NavigationButton(title: "Login", destination: MainTabView())
+                    Button(action: {
+                        signInWithEmailPassword()
+                    }) {
+                        Text("Login")
+                            .font(.custom("AvenirNext-Bold", size: 32))
+                                .foregroundColor(.white)
+                                .padding(.vertical, 5)
+                                .frame(maxWidth: .infinity)
+                                .background(Color("BlueMood"))
+                                .cornerRadius(20)
+                                .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 5)
+                    }
+                    .padding(.horizontal, 40)
+                    .padding(.top)
+                    
+                    .alert(isPresented: $showingAlert) {
+                        Alert(
+                            title: Text("Login Error"),
+                            message: Text(loginError ?? "Unknown error"),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    }
+                    .padding(.top, 10)
                     
                     VStack(spacing: 20) {
                         Text("or sign in with")
-                            .font(.subheadline)
+                            .font(.custom("AvenirNext-Bold", size: 15))
                             .foregroundColor(.gray)
                         
                         HStack(spacing: 40) {
-
                             Button(action: {
                                 signInGoogle()
                             }) {
@@ -94,7 +115,8 @@ struct LoginView: View {
                     NavigationTextLink(
                         messageText: "Don't have an account?",
                         linkText: "Sign up",
-                        destination: SignUpView())
+                        destination: SignUpView()
+                    )
                 }
                 .padding(.bottom, 20)
             }
@@ -106,11 +128,24 @@ struct LoginView: View {
     }
     
     @MainActor
+    func signInWithEmailPassword() {
+        Task {
+            do {
+                try await authController.signInWithEmail(email: email, password: password)
+                print("✅ Login con email y contraseña exitoso")
+            } catch {
+                print("Error de Sign-In con Firebase: \(error.localizedDescription)")
+                loginError = error.localizedDescription
+                showingAlert = true
+            }
+        }
+    }
+    
+    @MainActor
     func signInGoogle() {
         Task {
             do {
                 try await authController.signIn()
-
             } catch {
                 print("Error de Sign-In con Google: \(error.localizedDescription)")
             }

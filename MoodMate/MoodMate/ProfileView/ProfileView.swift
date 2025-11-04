@@ -104,13 +104,13 @@ struct ProfileView: View {
                 
                 Button(action: { logout() }) {
                     Text("Logout")
-                        .font(.custom("AvenirNext-Bold", size: 18))
+                        .font(.custom("AvenirNext-Bold", size: 32))
                         .foregroundColor(.white)
+                        .padding(.vertical, 5)
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.red.opacity(0.8))
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
+                        .background(Color("CoralMood"))
+                        .cornerRadius(15)
+                        .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 5)
                 }
                 .padding(.horizontal, 40)
                 .padding(.bottom, 50)

@@ -19,7 +19,7 @@ struct NavigationButton<Destination: View>: View {
                 .padding(.vertical, 5)
                 .frame(maxWidth: .infinity)
                 .background(Color("BlueMood"))
-                .cornerRadius(15)
+                .cornerRadius(20)
                 .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 5)
         }
         .padding(.horizontal, 40)
