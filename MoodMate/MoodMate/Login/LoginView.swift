@@ -10,6 +10,7 @@ import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
 import GoogleSignInSwift
+import FBSDKLoginKit
 
 struct LoginView: View {
     @State private var email = ""
@@ -18,6 +19,9 @@ struct LoginView: View {
     @Environment(\.dismiss) var dismiss
 
     @Environment(AuthController.self) private var authController
+    
+    @State private var loginError: Error?
+    @State private var showingAlert = false
     
     private var cardShadow: Color {
         Color("BlueMood")
@@ -38,7 +42,7 @@ struct LoginView: View {
                                 .modifier(TextFieldMoodMate(iconName: "envelope.fill"))
                                 .keyboardType(.emailAddress)
                                 .textInputAutocapitalization(.never)
-                            
+                                
                             SecureField("Password", text: $password)
                                 .modifier(TextFieldMoodMate(iconName: "key.horizontal.fill"))
                         }
@@ -61,7 +65,7 @@ struct LoginView: View {
                         HStack(spacing: 40) {
 
                             Button(action: {
-                                signIn()
+                                signInGoogle()
                             }) {
                                 Image("GoogleIcon")
                                     .resizable()
@@ -72,7 +76,7 @@ struct LoginView: View {
                             }
                             
                             Button(action: {
-                                print("Sign in with Facebook")
+                                signInFacebook()
                             }) {
                                 Image("FacebookIcon")
                                     .resizable()
@@ -101,16 +105,25 @@ struct LoginView: View {
         }
     }
     
-
     @MainActor
-    func signIn() {
+    func signInGoogle() {
         Task {
             do {
                 try await authController.signIn()
 
             } catch {
-                print("Error de Sign-In: \(error.localizedDescription)")
-
+                print("Error de Sign-In con Google: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    @MainActor
+    func signInFacebook() {
+        Task {
+            do {
+                try await authController.signInWithFacebook()
+            } catch {
+                print("Error de Sign-In con Facebook: \(error.localizedDescription)")
             }
         }
     }

@@ -15,18 +15,56 @@ struct ProfileView: View {
     
     @Environment(AuthController.self) private var authController
     
-    let currentUser = Auth.auth().currentUser
+    private var currentUser: FirebaseAuth.User? {
+        return Auth.auth().currentUser
+    }
     
-
-    let userName: String = Auth.auth().currentUser?.displayName ?? "Guess"
-    let userEmail: String = Auth.auth().currentUser?.email ?? "Without email"
+    private var userName: String {
+        return currentUser?.displayName ?? "Guest"
+    }
+    
+    private var userEmail: String {
+        if let email = currentUser?.email, !email.isEmpty {
+            return email
+        } else {
+            return "Email not available"
+        }
+    }
+    
+    private var providerPhotoURL: URL? {
+        return currentUser?.photoURL
+    }
     
     @State private var selectedImageItem: PhotosPickerItem? = nil
     @State private var profileImage: Image? = nil
     
-    private var googlePhotoURL: URL? {
 
-        return currentUser?.photoURL
+    @ViewBuilder
+    private func profileImageContent() -> some View {
+        if profileImage != nil {
+            profileImage!
+                .resizable()
+                .styledImage()
+        } else if let url = providerPhotoURL {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                        .frame(width: 200, height: 200)
+                        .clipShape(Rectangle())
+                        .shadow(color: Color.black.opacity(0.2), radius: 10)
+                case .success(let image):
+                    image.resizable()
+                        .styledImage()
+                case .failure:
+                    DefaultAvatar()
+                @unknown default:
+                    DefaultAvatar()
+                }
+            }
+        } else {
+            DefaultAvatar()
+        }
     }
     
     var body: some View {
@@ -42,40 +80,14 @@ struct ProfileView: View {
                     .padding(.top, 40)
 
                 PhotosPicker(selection: $selectedImageItem, matching: .images) {
-                    
-                    Group {
-                        if profileImage != nil {
-                        
-                            profileImage!.resizable()
-                                .styledImage()
-                        } else if let url = googlePhotoURL {
-   
-                            AsyncImage(url: url) { phase in
-                                switch phase {
-                                case .empty:
-                                    ProgressView()
-                                case .success(let image):
-                                    image.resizable()
-                                        .styledImage()
-                                case .failure:
-                                    DefaultAvatar()
-                                @unknown default:
-                                    DefaultAvatar()
-                                }
-                            }
-                        } else {
-                           
-                            DefaultAvatar()
-                        }
-                    }
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 200, height: 200)
-
+                    profileImageContent()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 200, height: 200)
                 }
                 .padding(.bottom, 20)
                 .onChange(of: selectedImageItem) { _, newItem in
                     Task {
-                        if let data =  try? await newItem?.loadTransferable(type: Data.self) {
+                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
                             loadImage(from: data)
                             saveImageData(data)
                         }
@@ -83,7 +95,6 @@ struct ProfileView: View {
                 }
                 
                 VStack(spacing: 30) {
-              
                     ProfileRow(iconName: "person.fill", value: userName)
                     ProfileRow(iconName: "envelope.fill", value: userEmail)
                 }
@@ -91,7 +102,6 @@ struct ProfileView: View {
                 
                 Spacer()
                 
-
                 Button(action: { logout() }) {
                     Text("Logout")
                         .font(.custom("AvenirNext-Bold", size: 18))
@@ -111,15 +121,15 @@ struct ProfileView: View {
         }
     }
     
-
     
+    @MainActor
     func logout() {
         do {
             UserDefaults.standard.removeObject(forKey: kProfileImageKey)
             profileImage = nil
             try authController.signOut()
         } catch {
-            print("Error to logout: \(error.localizedDescription)")
+            print("Error al cerrar sesión: \(error.localizedDescription)")
         }
     }
     
@@ -128,7 +138,7 @@ struct ProfileView: View {
     }
     
     func loadSavedImage() {
-        if let imageData =  UserDefaults.standard.data(forKey: kProfileImageKey) {
+        if let imageData = UserDefaults.standard.data(forKey: kProfileImageKey) {
             loadImage(from: imageData)
         }
     }
@@ -137,7 +147,7 @@ struct ProfileView: View {
         if let uiImage = UIImage(data: data) {
             profileImage = Image(uiImage: uiImage)
         } else {
-            profileImage =  nil
+            profileImage = nil
         }
     }
 }
@@ -151,7 +161,6 @@ extension View {
             .frame(width: 200, height: 200)
     }
 }
-
 
 struct DefaultAvatar: View {
     var body: some View {
