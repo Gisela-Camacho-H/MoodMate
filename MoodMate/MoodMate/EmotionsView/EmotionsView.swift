@@ -49,12 +49,12 @@ struct EmotionsView: View {
                 .background(Color.clear)
                 .cornerRadius(15)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 15)
                         .stroke(Color("BlueMood"), lineWidth: 2)
                 )
                 .padding(.horizontal)
                 .shadow(color: Color("BlueMood").opacity(0.3), radius: 10, x: 0, y: 5)
-                .shadow(color: Color.shadowMood.opacity(0.3), radius: 5, x: 0, y: 5)
+                .shadow(color: Color.shadowMood.opacity(0.3), radius: 10, x: 0, y: 10)
                 
                 Spacer()
             }

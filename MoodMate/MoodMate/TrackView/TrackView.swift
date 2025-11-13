@@ -29,7 +29,7 @@ struct TrackView: View {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.white)
                         .stroke(coralColor, lineWidth: 2)
-                        .shadow(color: .shadowMood.opacity(0.3), radius: 8, x: 0, y: 5)
+                        .shadow(color: .shadowMood.opacity(0.3), radius: 10, x: 0, y: 10)
                         .padding(.horizontal, 25)
 
                     ScrollView {

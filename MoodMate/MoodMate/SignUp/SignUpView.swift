@@ -56,7 +56,7 @@ struct SignUpView: View {
                         .stroke(Color("BlueMood"), lineWidth: 2))
                     .cornerRadius(20)
                     .shadow(color: cardShadow.opacity(0.3), radius: 10, x:0, y: 5)
-                    .shadow(color: Color.shadowMood.opacity(0.15), radius: 5, x:0, y: 5)
+                    .shadow(color: Color.shadowMood.opacity(0.15), radius: 10, x:0, y: 10)
                     
                     Button(action: {
                         signUpUser()
@@ -68,7 +68,7 @@ struct SignUpView: View {
                             .frame(maxWidth: .infinity)
                             .background(Color("BlueMood"))
                             .cornerRadius(15)
-                            .shadow(color: Color.shadowMood.opacity(0.15), radius: 5, x: 0, y: 5)
+                            .shadow(color: Color.shadowMood.opacity(0.15), radius: 10, x: 0, y: 10)
                     }
                     .alert(isPresented: $showingAlert) {
                         Alert(

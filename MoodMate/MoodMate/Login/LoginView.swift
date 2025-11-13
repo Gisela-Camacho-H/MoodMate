@@ -54,7 +54,7 @@ struct LoginView: View {
                     .background(Color("SpaceMood"))
                     .cornerRadius(20)
                     .shadow(color: cardShadow.opacity(0.3), radius: 10, x: 0, y: 5)
-                    .shadow(color: Color.shadowMood.opacity(0.15), radius: 5, x: 0, y: 5)
+                    .shadow(color: Color.shadowMood.opacity(0.15), radius: 10, x: 0, y: 10)
                     
 
                     Button(action: {
@@ -67,7 +67,7 @@ struct LoginView: View {
                                 .frame(maxWidth: .infinity)
                                 .background(Color("BlueMood"))
                                 .cornerRadius(20)
-                                .shadow(color: Color.shadowMood.opacity(0.15), radius: 5, x: 0, y: 5)
+                                .shadow(color: Color.shadowMood.opacity(0.15), radius: 10, x: 0, y: 10)
                     }
                     .padding(.horizontal, 40)
                     .padding(.top)

@@ -110,7 +110,7 @@ struct ProfileView: View {
                         .frame(maxWidth: .infinity)
                         .background(Color("CoralMood"))
                         .cornerRadius(15)
-                        .shadow(color: Color.shadowMood.opacity(0.15), radius: 5, x: 0, y: 5)
+                        .shadow(color: Color.shadowMood.opacity(0.15), radius: 10, x: 0, y: 10)
                 }
                 .padding(.horizontal, 40)
                 .padding(.bottom, 50)

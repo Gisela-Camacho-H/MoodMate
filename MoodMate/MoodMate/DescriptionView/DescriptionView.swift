@@ -21,6 +21,7 @@ struct DescriptionView: View {
     
     var body: some View {
         ZStack {
+            Color("BaseMood").edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 20) {
                  Text("Emotion Description")
@@ -77,7 +78,7 @@ struct DescriptionView: View {
                             .padding(10)
                             .background(Color("CoralMood"))
                             .clipShape(Circle())
-                            .shadow(color: .shadowMood.opacity(0.3), radius: 5, x: 0, y: 5)
+                            .shadow(color: .shadowMood.opacity(0.3), radius: 10, x: 0, y: 10)
                     }
                     .padding(.top, 5)
                     Spacer()
