@@ -12,10 +12,12 @@ struct MoodView: View {
     @State private var selectedEmotion: EmotionModel? = nil
     @State private var userThought: String = ""
     @ObservedObject var tabManager: TabManager
-    
     @State private var emotionForFeedback: EmotionModel? = nil
+    @State private var showFeedback = false
     
-    let columns =  [
+    @StateObject private var viewModel = MoodViewModel()
+    
+    let columns = [
         GridItem(.flexible(minimum: 60)),
         GridItem(.flexible(minimum: 60)),
         GridItem(.flexible(minimum: 60)),
@@ -23,10 +25,10 @@ struct MoodView: View {
         GridItem(.flexible(minimum: 60))
     ]
     
-    
     var body: some View {
         ZStack(alignment: .top) {
             Color("BaseMood").ignoresSafeArea(.all)
+            
             ScrollView {
                 VStack {
                     Text("How are you doing today?")
@@ -62,11 +64,17 @@ struct MoodView: View {
                     .padding(.horizontal, 30)
                     .padding(.top, 10)
                     
-                    ConditionButton(title: "Lift me up") {
-                        if let emotion =  selectedEmotion {
-                            emotionForFeedback = emotion
-                        }
+                    ConditionButton(title: viewModel.isSaving ? "Saving..." : "Lift me up") {
+                        guard let emotion = selectedEmotion else { return }
+                        emotionForFeedback = emotion
+                        viewModel.addMoodLog(
+                            emotionName: emotion.name,
+                            note: userThought,
+                            date: Date()
+                        )
                     }
+                    .disabled(viewModel.isSaving || selectedEmotion == nil)
+                    .opacity(viewModel.isSaving ? 0.6 : 1)
                     .ignoresSafeArea(.keyboard, edges: .bottom)
                 }
                 .padding(.top, 0)
@@ -77,20 +85,36 @@ struct MoodView: View {
                 UIApplication.shared.endEditing()
             }
         }
-        .fullScreenCover(item: $emotionForFeedback) { emotion in
-            FeedbackView(selectedEmotion: emotion)
+        // Mostrar FeedbackView solo cuando el mood se guardó correctamente
+        .onChange(of: viewModel.saveSuccess) { success in
+            if success, emotionForFeedback != nil {
+                showFeedback = true
+            }
+        }
+        .fullScreenCover(isPresented: $showFeedback) {
+            if let emotion = emotionForFeedback {
+                FeedbackView(selectedEmotion: emotion)
+            }
+        }
+        // Mostrar error si hay problema al guardar
+        .alert("Error", isPresented: Binding<Bool>(
+            get: { viewModel.saveError != nil },
+            set: { _ in viewModel.saveError = nil }
+        )) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(viewModel.saveError ?? "")
         }
     }
 }
-    
-    #Preview {
-        let tabManager = TabManager()
-        MoodView(tabManager: tabManager)
+
+#Preview {
+    let tabManager = TabManager()
+    MoodView(tabManager: tabManager)
+}
+
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
-    
-    
-    extension UIApplication {
-        func endEditing() {
-            sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        }
-    }
+}

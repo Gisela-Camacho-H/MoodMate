@@ -71,7 +71,7 @@ final class AuthController {
         let loginManager = LoginManager()
 
         let loginResult: Result<LoginManagerLoginResult, Error> = await withCheckedContinuation { continuation in
-            loginManager.logIn(permissions: ["public_profile", "email"], from: rootViewController) { result, error in
+            loginManager.logIn(permissions: ["public_profile"], from: rootViewController) { result, error in
                 if let result = result, !result.isCancelled {
                     continuation.resume(returning: .success(result))
                 } else if let error = error {

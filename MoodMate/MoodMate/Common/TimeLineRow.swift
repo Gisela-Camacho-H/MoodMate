@@ -18,11 +18,9 @@ struct TimeLineRow: View {
     }
     
     var body: some View {
-        
-        
         HStack(spacing: 0) {
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 5) {
                 Text(displayDate)
                     .font(.custom("AvenirNext-Bold", size: 20))
                     .foregroundColor(Color.black)
@@ -31,28 +29,34 @@ struct TimeLineRow: View {
                     Text(note)
                         .font(.custom("AvenirNext-Regular", size: 15))
                         .foregroundColor(Color("GrayMood"))
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: 130, alignment: .leading)
                 }
             }
+            .frame(width: 130, alignment: .leading)
             .padding(.trailing, 40)
             
             VStack(spacing: 0) {
-                Circle().stroke(lineColor, lineWidth: 1.5).fill(Color.white)
-                    .frame(width: 10, height: 10).zIndex(1)
-                Rectangle().fill(lineColor).frame(width: 3, height: 170)
+                Circle()
+                    .stroke(lineColor, lineWidth: 1.5)
+                    .background(Circle().fill(Color.white))
+                    .frame(width: 10, height: 10)
+                    .zIndex(1)
+                
+                Rectangle()
+                    .fill(lineColor)
+                    .frame(width: 3, height: 170 - 10)
             }
+            
             Spacer()
             
+
             Image(log.emotionName)
                 .resizable()
                 .frame(width: 100, height: 100)
-                .padding(.trailing, 20)
+                .padding(.trailing, 40)
         }
-        .frame(height: 170, alignment: .top).padding(.top, 10)
+        .frame(height: 170, alignment: .top)
         .padding(.trailing, 20)
     }
-}
-
-
-#Preview {
-    TimeLineRow(log: MoodLogModel(id: "m1", emotionName: "Grateful", note: "Hi", date: Date().addingTimeInterval(-86400*1)))
 }

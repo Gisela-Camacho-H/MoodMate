@@ -6,30 +6,61 @@
 //
 
 import Foundation
-import Combine
+import FirebaseFirestore
+import FirebaseAuth
 
-protocol MoodLogServices {
-    func fetchMoodLogs() -> AnyPublisher<[MoodLogModel], Error>
+protocol MoodLogServiceProtocol {
+    func fetchMoodLogs(completion: @escaping (Result<[MoodLogModel], Error>) -> Void)
+    func saveMoodLog(_ log: MoodLogModel, completion: @escaping (Bool) -> Void)
 }
 
-class MockMoodLogService: MoodLogServices {
+final class MoodLogService: MoodLogServiceProtocol {
+    private let db = Firestore.firestore()
+    private let collection = "moodLogs"
 
-    
-    private let mockLogs: [MoodLogModel] = [
-        MoodLogModel(id: "m1", emotionName: "Joyful", note: "Great day!", date: Date().addingTimeInterval(-86400*1)),
-        MoodLogModel(id: "m2", emotionName: "Hopeful", note: "Feeling positive", date: Date().addingTimeInterval(-86400*3)),
-        MoodLogModel(id: "m3", emotionName: "Anxious", note: "To much work", date: Date().addingTimeInterval(-86400*7)),
-        MoodLogModel(id: "m4", emotionName: "Calm", note: "Meditated", date: Date().addingTimeInterval(-86400*10)),
-        MoodLogModel(id: "m5", emotionName: "Content", note: nil , date: Date().addingTimeInterval(-86400*15))
-    ]
-    
-    func fetchMoodLogs() -> AnyPublisher<[MoodLogModel], any Error> {
-        return Future<[MoodLogModel], Error> { promise in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                let sortedLog =  self.mockLogs.sorted(by: {$0.date > $1.date})
-                promise(.success(sortedLog))
-            }
+    func fetchMoodLogs(completion: @escaping (Result<[MoodLogModel], Error>) -> Void) {
+        
+ 
+        guard let currentUserId = Auth.auth().currentUser?.uid else {
+            completion(.success([]))
+            return
         }
-        .eraseToAnyPublisher()
+        
+        db.collection("moodLogs")
+            .whereField("userId", isEqualTo: currentUserId)
+            .order(by: "date", descending: true)
+            .getDocuments { snapshot, error in
+                
+                if let error = error {
+                    print("❌ Error de Firestore al obtener logs: \(error.localizedDescription)")
+                    completion(.failure(error))
+                    return
+                }
+
+                let logs = snapshot?.documents.compactMap {
+         
+                     MoodLogModel(document: $0.data(), id: $0.documentID)
+                } ?? []
+                
+                completion(.success(logs))
+            }
+    }
+
+    func saveMoodLog(_ log: MoodLogModel, completion: @escaping (Bool) -> Void) {
+        guard let currentUserId = Auth.auth().currentUser?.uid else {
+            completion(false)
+            return
+        }
+
+        let data: [String: Any] = [
+            "emotionName": log.emotionName,
+            "note": log.note ?? "",
+            "date": log.date.timeIntervalSince1970,
+            "userId": currentUserId
+        ]
+
+        db.collection(collection).document(log.id).setData(data) { error in
+            completion(error == nil)
+        }
     }
 }
