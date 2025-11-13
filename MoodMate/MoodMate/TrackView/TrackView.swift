@@ -29,7 +29,7 @@ struct TrackView: View {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.white)
                         .stroke(coralColor, lineWidth: 2)
-                        .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 5)
+                        .shadow(color: .shadowMood.opacity(0.3), radius: 8, x: 0, y: 5)
                         .padding(.horizontal, 25)
 
                     ScrollView {
@@ -73,4 +73,8 @@ struct TrackView: View {
                 viewModel.fetchMoodLogs()
         }
     }
+}
+
+#Preview {
+    TrackView(tabManager: TabManager())
 }

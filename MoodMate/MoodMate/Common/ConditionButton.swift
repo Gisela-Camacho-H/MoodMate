@@ -20,7 +20,7 @@ struct ConditionButton: View {
                 .frame(maxWidth: .infinity)
                 .background(Color("BlueMood"))
                 .cornerRadius(20)
-                .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 5)
+                .shadow(color: Color.shadowMood.opacity(0.15), radius: 5, x: 0, y: 5)
         }
         .padding(.horizontal, 40)
         .padding(.vertical, 20)

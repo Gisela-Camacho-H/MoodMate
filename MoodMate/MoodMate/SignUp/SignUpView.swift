@@ -19,7 +19,7 @@ struct SignUpView: View {
     @Environment(AuthController.self) private var authController
     
     private var cardShadow: Color {
-        Color(.white)
+        Color("SpaceMood")
     }
     
     var body: some View {
@@ -35,25 +35,28 @@ struct SignUpView: View {
                         VStack(spacing: 30) {
                             TextField("Name", text: $name)
                                 .modifier(TextFieldMoodMate(iconName: "person.fill"))
+                                .foregroundColor(.primary)
                             
                             TextField("Email", text: $email)
                                 .modifier(TextFieldMoodMate(iconName: "envelope.fill"))
                                 .keyboardType(.emailAddress)
                                 .textInputAutocapitalization(.never)
+                                .foregroundColor(.primary)
                             
                             SecureField("Password", text: $password)
                                 .modifier(TextFieldMoodMate(iconName: "key.horizontal.fill"))
+                                .foregroundColor(.primary)
                         }
                         .padding(.horizontal, 20)
                     }
                     .padding(.vertical, 30)
                     .frame(width: geometry.size.width * 0.9)
-                    .background(.white)
-                    .cornerRadius(20)
-                    .overlay(RoundedRectangle(cornerRadius: 12)
+                    .background(Color("SpaceMood"))
+                    .overlay(RoundedRectangle(cornerRadius: 20)
                         .stroke(Color("BlueMood"), lineWidth: 2))
+                    .cornerRadius(20)
                     .shadow(color: cardShadow.opacity(0.3), radius: 10, x:0, y: 5)
-                    .shadow(color: Color.black.opacity(0.15), radius: 5, x:0, y: 5)
+                    .shadow(color: Color.shadowMood.opacity(0.15), radius: 5, x:0, y: 5)
                     
                     Button(action: {
                         signUpUser()
@@ -65,7 +68,7 @@ struct SignUpView: View {
                             .frame(maxWidth: .infinity)
                             .background(Color("BlueMood"))
                             .cornerRadius(15)
-                            .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 5)
+                            .shadow(color: Color.shadowMood.opacity(0.15), radius: 5, x: 0, y: 5)
                     }
                     .alert(isPresented: $showingAlert) {
                         Alert(
@@ -88,7 +91,7 @@ struct SignUpView: View {
             }
             .padding(.top, 100)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(.white)
+            .background(.spaceMood)
         }
     }
     

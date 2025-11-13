@@ -23,7 +23,7 @@ struct LoginView: View {
     @State private var showingAlert = false
     
     private var cardShadow: Color {
-        Color("BlueMood")
+        Color("SpaceMood")
     }
     
     var body: some View {
@@ -41,18 +41,20 @@ struct LoginView: View {
                                 .modifier(TextFieldMoodMate(iconName: "envelope.fill"))
                                 .keyboardType(.emailAddress)
                                 .textInputAutocapitalization(.never)
+                                .foregroundColor(.primary)
                             
                             SecureField("Password", text: $password)
                                 .modifier(TextFieldMoodMate(iconName: "key.horizontal.fill"))
+                                .foregroundColor(.primary)
                         }
                         .padding(.horizontal, 20)
                     }
                     .padding(.vertical, 30)
                     .frame(width: geometry.size.width * 0.9)
-                    .background(.white)
+                    .background(Color("SpaceMood"))
                     .cornerRadius(20)
                     .shadow(color: cardShadow.opacity(0.3), radius: 10, x: 0, y: 5)
-                    .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 5)
+                    .shadow(color: Color.shadowMood.opacity(0.15), radius: 5, x: 0, y: 5)
                     
 
                     Button(action: {
@@ -65,7 +67,7 @@ struct LoginView: View {
                                 .frame(maxWidth: .infinity)
                                 .background(Color("BlueMood"))
                                 .cornerRadius(20)
-                                .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 5)
+                                .shadow(color: Color.shadowMood.opacity(0.15), radius: 5, x: 0, y: 5)
                     }
                     .padding(.horizontal, 40)
                     .padding(.top)
@@ -93,7 +95,7 @@ struct LoginView: View {
                                     .scaledToFit()
                                     .frame(width: 45, height: 45)
                                     .clipShape(Rectangle())
-                                    .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 10)
+                                    .shadow(color: Color.shadowMood.opacity(0.4), radius: 10, x: 0, y: 10)
                             }
                             
                             Button(action: {
@@ -104,7 +106,7 @@ struct LoginView: View {
                                     .scaledToFit()
                                     .frame(width: 45, height: 45)
                                     .clipShape(Rectangle())
-                                    .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 10)
+                                    .shadow(color: Color.shadowMood.opacity(0.4), radius: 10, x: 0, y: 10)
                             }
                         }
                     }

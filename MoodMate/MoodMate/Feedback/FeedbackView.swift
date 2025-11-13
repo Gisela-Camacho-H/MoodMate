@@ -86,7 +86,7 @@ struct FeedbackView: View {
                             .padding(10)
                             .background(Color("CoralMood"))
                             .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y:5)
+                            .shadow(color: .shadowMood.opacity(0.3), radius: 5, x: 0, y:5)
                         
                     }
                     .padding(.leading, 25)

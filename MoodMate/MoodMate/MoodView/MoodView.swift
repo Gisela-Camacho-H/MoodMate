@@ -50,16 +50,19 @@ struct MoodView: View {
                             .foregroundColor(Color("CoralMood"))
                             .padding(.bottom, 10)
                         
-                        TextEditor(text: $userThought)
+                        ZStack(alignment: .topLeading) {
+                                
+                                RoundedRectangle(cornerRadius: 20)
+                                .fill(Color.whiteMood)
+                                    .stroke(Color("CoralMood"), lineWidth: 4)
+                                
+                                TextEditor(text: $userThought)
+                                    .scrollContentBackground(.hidden)
+                                    .background(Color.clear)
+                                    .foregroundColor(Color("BlueMood"))
+                                    .padding(10)
+                            }
                             .frame(height: 100)
-                            .cornerRadius(15)
-                            .padding(8)
-                            .background(Color.white)
-                            .foregroundColor(Color("BlueMood"))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(Color("CoralMood"), lineWidth: 3)
-                            )
                     }
                     .padding(.horizontal, 30)
                     .padding(.top, 10)
@@ -85,7 +88,6 @@ struct MoodView: View {
                 UIApplication.shared.endEditing()
             }
         }
-        // Mostrar FeedbackView solo cuando el mood se guardó correctamente
         .onChange(of: viewModel.saveSuccess) { success in
             if success, emotionForFeedback != nil {
                 showFeedback = true
@@ -96,7 +98,6 @@ struct MoodView: View {
                 FeedbackView(selectedEmotion: emotion)
             }
         }
-        // Mostrar error si hay problema al guardar
         .alert("Error", isPresented: Binding<Bool>(
             get: { viewModel.saveError != nil },
             set: { _ in viewModel.saveError = nil }

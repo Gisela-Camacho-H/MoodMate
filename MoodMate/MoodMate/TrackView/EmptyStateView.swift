@@ -34,7 +34,7 @@ struct EmptyStateView: View {
                     .frame(width: 300)
                     .background(Color("BlueMood"))
                     .cornerRadius(20)
-                    .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 5)
+                    .shadow(color: Color.shadowMood.opacity(0.15), radius: 5, x: 0, y: 5)
             }
             .padding(.top, 10)
         }

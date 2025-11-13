@@ -37,7 +37,7 @@ struct ScriptureCard: View {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(color, lineWidth: 2)
         )
-        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+        .shadow(color: .shadowMood.opacity(0.1), radius: 5, x: 0, y: 5)
         
     }
 }
