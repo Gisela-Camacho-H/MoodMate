@@ -8,35 +8,57 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
                 Color("BlueBackground")
                     .ignoresSafeArea()
-                VStack {
+                
+                VStack(spacing: isIPad ? 40 : 20) {
+                    
                     Image("Name")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 100, height: 100)
-                        .padding(.trailing, 15)
-                    
+                        .frame(
+                            width: isIPad ? 300 : 100,
+                            height: isIPad ? 200 : 100
+                        )
+                        .padding(.top, isIPad ? 40 : 20)
+
+                    isIPad ? nil : Spacer()
+
                     Image("Logo")
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 190, height: 190)
-                        .padding(.top, 100)
-                        .padding(.bottom, 180)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(
+                            width: isIPad ? 400 : 250,
+                            height: isIPad ? 400 : 250
+                        )
+                        .padding(.bottom, isIPad ? 0 : 130)
+
                     
-                    NavigationButton(title: "Login", destination: LoginView())
-                    
-                    NavigationTextLink(
-                        messageText: "Don't have an account?",
-                        linkText: "Sign up",
-                        destination: SignUpView())
+                    VStack(spacing: isIPad ? 25 : 20) {
+                        NavigationButton(title: "Login", destination: LoginView())
+                        
+                        NavigationTextLink(
+                            messageText: "Don't have an account?",
+                            linkText: "Sign up",
+                            destination: SignUpView()
+                        )
+                        .font(.system(size: isIPad ? 26 : 16))
+                    }
+                    .padding(.bottom, isIPad ? 60 : 30)
                 }
-                .padding(.bottom, 20)
+                .padding(.horizontal, isIPad ? 80 : 20)
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .navigationBarHidden(true)
     }
 }
