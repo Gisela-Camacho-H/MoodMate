@@ -17,6 +17,11 @@ struct SignUpView: View {
     @State private var showingAlert = false
     
     @Environment(AuthController.self) private var authController
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
     
     private var cardShadow: Color {
         Color("SpaceMood")
@@ -27,12 +32,12 @@ struct SignUpView: View {
             VStack {
                 VStack {
                     Text("Create Account")
-                        .font(.custom("AvenirNext-Bold", size: 45))
+                        .font(.custom("AvenirNext-Bold", size: isIPad ? 60 : 45))
                         .fontDesign(.rounded)
                         .foregroundColor(Color("CoralMood"))
                     
-                    VStack(spacing: 30) {
-                        VStack(spacing: 30) {
+                    VStack(spacing: isIPad ? 60 : 30) {
+                        VStack(spacing: isIPad ? 60 : 30) {
                             TextField("Name", text: $name)
                                 .modifier(TextFieldMoodMate(iconName: "person.fill"))
                                 .foregroundColor(.primary)
@@ -47,14 +52,14 @@ struct SignUpView: View {
                                 .modifier(TextFieldMoodMate(iconName: "key.horizontal.fill"))
                                 .foregroundColor(.primary)
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, isIPad ? 40 : 20)
                     }
-                    .padding(.vertical, 30)
+                    .padding(.vertical, isIPad ? 60 : 30)
                     .frame(width: geometry.size.width * 0.9)
                     .background(Color("SpaceMood"))
-                    .overlay(RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color("BlueMood"), lineWidth: 2))
-                    .cornerRadius(20)
+                    .overlay(RoundedRectangle(cornerRadius: isIPad ? 40 : 20)
+                        .stroke(Color("BlueMood"), lineWidth: isIPad ? 4 : 2))
+                    .cornerRadius(isIPad ? 40 : 20)
                     .shadow(color: cardShadow.opacity(0.3), radius: 10, x:0, y: 5)
                     .shadow(color: Color.shadowMood.opacity(0.15), radius: 10, x:0, y: 10)
                     
@@ -62,7 +67,7 @@ struct SignUpView: View {
                         signUpUser()
                     }) {
                         Text("Submit")
-                            .font(.custom("AvenirNext-Bold", size: 32))
+                            .font(.custom("AvenirNext-Bold", size: isIPad ? 40 : 32))
                             .foregroundColor(.white)
                             .padding(.vertical, 5)
                             .frame(maxWidth: .infinity)
@@ -77,8 +82,8 @@ struct SignUpView: View {
                             dismissButton: .default(Text("OK"))
                         )
                     }
-                    .padding(.horizontal, 40)
-                    .padding(.top, 10)
+                    .padding(.horizontal, isIPad ? 60 : 40)
+                    .padding(.top, isIPad ? 40 : 10)
                     
                     Spacer()
                     
@@ -87,7 +92,7 @@ struct SignUpView: View {
                         linkText: "Login",
                         destination: LoginView())
                 }
-                .padding(.bottom, 20)
+                .padding(.bottom, isIPad ? 40 : 20)
             }
             .padding(.top, 100)
             .frame(maxWidth: .infinity, maxHeight: .infinity)

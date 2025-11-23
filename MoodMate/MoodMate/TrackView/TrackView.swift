@@ -12,6 +12,12 @@ struct TrackView: View {
 
     @StateObject private var viewModel = TrackViewModel()
     @ObservedObject var tabManager: TabManager
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
+    
     let coralColor = Color("CoralMood")
     let lightBlue = Color("BaseMood")
 
@@ -21,16 +27,16 @@ struct TrackView: View {
 
             VStack {
                 Text("My Mood Track")
-                    .font(.custom("AvenirNext-Bold", size: 45))
+                    .font(.custom("AvenirNext-Bold", size: isIPad ? 60 : 45))
                     .foregroundColor(coralColor)
-                    .padding(.top, 10)
+                    .padding(.top, isIPad ? 20 : 10)
 
                 ZStack(alignment: .top) {
-                    RoundedRectangle(cornerRadius: 25)
+                    RoundedRectangle(cornerRadius: isIPad ? 50 : 30)
                         .fill(Color.white)
                         .stroke(coralColor, lineWidth: 2)
                         .shadow(color: .shadowMood.opacity(0.3), radius: 10, x: 0, y: 10)
-                        .padding(.horizontal, 25)
+                        .padding(.horizontal, isIPad ? 50 : 30)
 
                     ScrollView {
                         VStack(spacing: 0) {
@@ -48,7 +54,7 @@ struct TrackView: View {
                                 .padding(.leading, 60)
                             }
                         }
-                        .padding(.top, 30)
+                        .padding(.top, isIPad ? 40 : 30)
                     }
                 }
                 Spacer()
@@ -61,12 +67,12 @@ struct TrackView: View {
                     PlusButton(
                         backgroundColor: "BlueMood",
                         action: { tabManager.selectionTab = .mood },
-                        size: 20,
-                        padding: 10
+                        size: isIPad ? 40 : 20,
+                        padding: isIPad ? 15 : 10
                     )
                 }
-                .padding(.trailing, 40)
-                .padding(.bottom, 25)
+                .padding(.trailing, isIPad ? 80 : 40)
+                .padding(.bottom, isIPad ? 40 : 25)
             }
         }
         .onAppear {

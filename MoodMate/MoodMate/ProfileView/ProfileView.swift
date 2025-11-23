@@ -14,6 +14,11 @@ private let kProfileImageKey = "userProfilImageData"
 struct ProfileView: View {
     
     @Environment(AuthController.self) private var authController
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
     
     private var currentUser: FirebaseAuth.User? {
         return Auth.auth().currentUser
@@ -44,18 +49,18 @@ struct ProfileView: View {
         if profileImage != nil {
             profileImage!
                 .resizable()
-                .styledImage()
+                .styledImage(width: isIPad ? 300 : 200, height: isIPad ? 300 : 200)
         } else if let url = providerPhotoURL {
             AsyncImage(url: url) { phase in
                 switch phase {
                 case .empty:
                     ProgressView()
-                        .frame(width: 200, height: 200)
+                        .frame(width: isIPad ? 300 : 200, height: isIPad ? 300 : 200)
                         .clipShape(Rectangle())
                         .shadow(color: Color.shadowMood.opacity(0.2), radius: 10)
                 case .success(let image):
                     image.resizable()
-                        .styledImage()
+                        .styledImage(width: isIPad ? 300 : 200, height: isIPad ? 300 : 200)
                 case .failure:
                     DefaultAvatar()
                 @unknown default:
@@ -72,17 +77,17 @@ struct ProfileView: View {
             Color("BaseMood")
                 .edgesIgnoringSafeArea(.all)
             
-            VStack(spacing: 40) {
+            VStack(spacing: isIPad ? 80 : 40) {
                 
                 Text("Profile")
-                    .font(.custom("AvenirNext-Bold", size: 45))
+                    .font(.custom("AvenirNext-Bold", size: isIPad ? 65 : 45))
                     .foregroundColor(Color("CoralMood"))
                     .padding(.top, 40)
 
                 PhotosPicker(selection: $selectedImageItem, matching: .images) {
                     profileImageContent()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 200, height: 200)
+                        .frame(width: isIPad ? 300 : 200, height: isIPad ? 300 : 200)
                 }
                 .padding(.bottom, 20)
                 .onChange(of: selectedImageItem) { _, newItem in
@@ -94,17 +99,17 @@ struct ProfileView: View {
                     }
                 }
                 
-                VStack(spacing: 30) {
+                VStack(spacing: isIPad ? 40 : 30) {
                     ProfileRow(iconName: "person.fill", value: userName)
                     ProfileRow(iconName: "envelope.fill", value: userEmail)
                 }
-                .padding(.horizontal, 40)
+                .padding(.horizontal, isIPad ? 80 : 40)
                 
                 Spacer()
                 
                 Button(action: { logout() }) {
                     Text("Logout")
-                        .font(.custom("AvenirNext-Bold", size: 32))
+                        .font(.custom("AvenirNext-Bold", size: isIPad ? 40 : 32))
                         .foregroundColor(.white)
                         .padding(.vertical, 5)
                         .frame(maxWidth: .infinity)
@@ -112,8 +117,8 @@ struct ProfileView: View {
                         .cornerRadius(15)
                         .shadow(color: Color.shadowMood.opacity(0.15), radius: 10, x: 0, y: 10)
                 }
-                .padding(.horizontal, 40)
-                .padding(.bottom, 50)
+                .padding(.horizontal, isIPad ? 60 : 40)
+                .padding(.bottom, isIPad ? 70 : 50)
             }
         }
         .onAppear {
@@ -153,21 +158,28 @@ struct ProfileView: View {
 }
 
 extension View {
-    func styledImage() -> some View {
+    
+    func styledImage(width: CGFloat, height: CGFloat) -> some View {
         self
             .clipShape(Rectangle())
             .overlay(Rectangle().stroke(Color("BlueMood"), lineWidth: 4))
             .shadow(color: Color.shadowMood.opacity(0.2), radius: 10)
-            .frame(width: 200, height: 200)
+            .frame(width: width, height: height)
     }
 }
 
 struct DefaultAvatar: View {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
+    
     var body: some View {
         Image("ProfileAvatar")
             .resizable()
             .foregroundColor(Color("BlueMood"))
-            .frame(width: 200, height: 200)
+            .frame(width: isIPad ? 300 : 200, height: isIPad ? 300 : 200)
     }
 }
 

@@ -12,6 +12,12 @@ struct DescriptionView: View {
     @Environment(\.dismiss) var dismiss
     let emotion: EmotionModel
     
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
+    
     @StateObject private var viewModel: DescriptionViewModel
     
     init(emotion: EmotionModel) {
@@ -23,16 +29,16 @@ struct DescriptionView: View {
         ZStack {
             Color("BaseMood").edgesIgnoringSafeArea(.all)
             
-            VStack(spacing: 20) {
+            VStack(spacing: isIPad ? 60 : 20) {
                  Text("Emotion Description")
-                    .font(.custom("AvenirNext-Bold", size: 36))
+                    .font(.custom("AvenirNext-Bold", size: isIPad ? 45 : 36))
                     .foregroundColor(Color("CoralMood"))
                     .padding(.top, 30)
                 
                 Image(emotion.iconName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 180, height: 180)
+                    .frame(width: isIPad ? 250 : 180, height: isIPad ? 250 : 180)
                 
                 Text(emotion.name)
                     .font(.custom("AvenirNext-Bold", size: 40))
@@ -45,21 +51,21 @@ struct DescriptionView: View {
                             .padding(50)
                     } else if let description = viewModel.descriptionText {
                         Text(description)
-                            .font(.custom("AvenirNext-Bold", size: 20))
+                            .font(.custom("AvenirNext-Bold", size: isIPad ? 25 :  20))
                             .foregroundColor(Color("BlueMood"))
                             .lineLimit(nil)
                             .fixedSize(horizontal: false, vertical: true)
                             .multilineTextAlignment(.center)
                     } else {
                         Text("This is a state of inner peace and stillness. You feel relaxed, unhurried, and mentally quiet, like the surface of a clear lake. There are no pressing worries, and you feel comfortable simply being in the moment.")
-                            .font(.custom("AvenirNext-Bold", size: 20))
+                            .font(.custom("AvenirNext-Bold", size: isIPad ? 25 : 20))
                             .foregroundColor(Color("BlueMood"))
                             .lineLimit(nil)
                             .fixedSize(horizontal: false, vertical: true)
                             .multilineTextAlignment(.center)
                     }
                 }
-                .padding(25)
+                .padding(isIPad ? 40 : 30)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color.white)
                 .cornerRadius(10)
@@ -73,9 +79,9 @@ struct DescriptionView: View {
                     Button(action: { dismiss()})
                     {
                         Image(systemName: "chevron.left")
-                            .font(.system(size: 20, weight: .bold))
+                            .font(.system(size: isIPad ? 30 : 20, weight: .bold))
                             .foregroundColor(.white)
-                            .padding(10)
+                            .padding(isIPad ? 15 : 10)
                             .background(Color("CoralMood"))
                             .clipShape(Circle())
                             .shadow(color: .shadowMood.opacity(0.3), radius: 10, x: 0, y: 10)
@@ -93,5 +99,5 @@ struct DescriptionView: View {
 }
 
 #Preview {
-    DescriptionView(emotion: EmotionModel.emotionList[0])
+    DescriptionView(emotion: EmotionModel.emotionList[19])
 }

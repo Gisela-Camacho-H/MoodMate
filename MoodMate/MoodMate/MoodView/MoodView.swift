@@ -8,14 +8,20 @@
 import SwiftUI
 
 struct MoodView: View {
-    @Environment(\.dismiss) var dismiss
     @State private var selectedEmotion: EmotionModel? = nil
     @State private var userThought: String = ""
-    @ObservedObject var tabManager: TabManager
     @State private var emotionForFeedback: EmotionModel? = nil
     @State private var showFeedback = false
     
+    @ObservedObject var tabManager: TabManager
     @StateObject private var viewModel = MoodViewModel()
+    
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
     
     let columns = [
         GridItem(.flexible(minimum: 60)),
@@ -32,39 +38,39 @@ struct MoodView: View {
             ScrollView {
                 VStack {
                     Text("How are you doing today?")
-                        .font(.custom("AvenirNext-Bold", size: 26))
+                        .font(.custom("AvenirNext-Bold", size: isIPad ? 40 : 26))
                         .foregroundColor(Color("CoralMood"))
-                        .padding(.top, 20)
+                        .padding(.top, isIPad ? 40 : 20)
                     
-                    LazyVGrid(columns: columns, spacing: 5) {
+                    LazyVGrid(columns: columns, spacing: isIPad ? 10 : 5) {
                         ForEach(EmotionModel.emotionList) { emotion in
                             EmotionGridItem(emotion: emotion, selectedEmotion: $selectedEmotion)
                         }
                     }
-                    .padding(.vertical, 20)
+                    .padding(.vertical, isIPad ? 50 : 20)
                     .background(.white)
                     
-                    VStack(spacing: 10) {
+                    VStack(spacing: isIPad ? 20 : 10) {
                         Text("Share what's on your mind")
-                            .font(.custom("AvenirNext-Bold", size: 24))
+                            .font(.custom("AvenirNext-Bold", size: isIPad ? 40 : 24))
                             .foregroundColor(Color("CoralMood"))
                             .padding(.bottom, 10)
                         
                         ZStack(alignment: .topLeading) {
                                 
-                                RoundedRectangle(cornerRadius: 20)
+                                RoundedRectangle(cornerRadius:  isIPad ? 25 : 20)
                                 .fill(Color.whiteMood)
-                                    .stroke(Color("CoralMood"), lineWidth: 4)
+                                    .stroke(Color("CoralMood"), lineWidth:  isIPad ? 5 :  4)
                                 
                                 TextEditor(text: $userThought)
                                     .scrollContentBackground(.hidden)
                                     .background(Color.clear)
                                     .foregroundColor(Color("BlueMood"))
-                                    .padding(10)
+                                    .padding( isIPad ? 20 : 10)
                             }
-                            .frame(height: 100)
+                            .frame(height: isIPad ? 150 : 100)
                     }
-                    .padding(.horizontal, 30)
+                    .padding(.horizontal, isIPad ? 50 : 30)
                     .padding(.top, 10)
                     
                     ConditionButton(title: viewModel.isSaving ? "Saving..." : "Lift me up") {

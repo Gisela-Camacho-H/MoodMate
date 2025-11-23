@@ -11,6 +11,11 @@ struct QuoteCardHomeView: View {
     let quote: Quote?
     let isLoading: Bool
     
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
     
     var body: some View {
         
@@ -23,30 +28,34 @@ struct QuoteCardHomeView: View {
                     .padding(.vertical, 30)
             } else {
                 Text("\"\(currentQuote.content)\"")
-                    .font(.custom("AvenirNext-Bold", size: 20))
+                    .font(.custom("AvenirNext-Bold", size: isIPad ? 30 : 20))
                     .foregroundColor(Color("BlueMood"))
                     .multilineTextAlignment(.center)
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.vertical, 25)
+                    .padding(.vertical, isIPad ? 30 : 25)
                 
                 HStack {
                     Spacer()
                     Text("by \(currentQuote.author)")
-                        .font(.custom("AvenirNext-Bold", size: 20))
+                        .font(.custom("AvenirNext-Bold", size: isIPad ? 30 :  20))
                         .foregroundColor(Color("CoralMood"))
                 }
             }
         }
-        .padding(.vertical, 15)
-        .padding(.horizontal, 25)
+        .padding(.vertical, isIPad ? 20 : 15)
+        .padding(.horizontal, isIPad ? 30 : 25)
         .frame(maxWidth: .infinity)
         .background(.white)
-        .cornerRadius(10)
+        .cornerRadius(isIPad ? 15 : 10)
         .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color("CoralMood"), lineWidth: 2)
+            RoundedRectangle(cornerRadius: isIPad ? 15 : 10)
+                .stroke(Color("CoralMood"), lineWidth: isIPad ? 3 : 2)
         )
-        .padding(.horizontal, 20)
+        .padding(.horizontal, isIPad ? 25 : 20)
     }
+}
+
+#Preview {
+    QuoteCardHomeView(quote: Quote(author: "Ralph Waldo Emerson", content: "The only person you are destined to become is the person you decide to be."), isLoading: false)
 }

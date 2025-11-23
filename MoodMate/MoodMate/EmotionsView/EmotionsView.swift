@@ -11,6 +11,12 @@ struct EmotionsView: View {
     
     let emotions = EmotionModel.emotionList
     
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
+    
     var body: some View {
         
         ZStack {
@@ -18,7 +24,7 @@ struct EmotionsView: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 Text("Emotions View")
-                    .font(.custom("AvenirNext-Bold", size: 45))
+                    .font(.custom("AvenirNext-Bold", size: isIPad ? 50 : 45))
                     .foregroundColor(Color("CoralMood"))
                     .padding([.horizontal, .top], 30)
                     .padding(.bottom, 15)
@@ -31,12 +37,12 @@ struct EmotionsView: View {
                                 Image(emotion.iconName)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 65, height: 65)
-                                    .padding(.trailing, 15)
+                                    .frame(width:  isIPad ? 90 : 65, height:  isIPad ? 90 : 65)
+                                    .padding(.trailing,  isIPad ? 30 : 15)
                                 
                                 VStack(alignment: .leading) {
                                     Text(emotion.name)
-                                        .font(.custom("AvenirNext-DemiBold", size: 25))
+                                        .font(.custom("AvenirNext-DemiBold", size:  isIPad ? 35 : 25))
                                         .foregroundColor(Color("GrayMood"))
                                 
                                 }
@@ -52,7 +58,7 @@ struct EmotionsView: View {
                     RoundedRectangle(cornerRadius: 15)
                         .stroke(Color("BlueMood"), lineWidth: 2)
                 )
-                .padding(.horizontal)
+                .padding(.horizontal,  isIPad ? 50 : 30)
                 .shadow(color: Color("BlueMood").opacity(0.3), radius: 10, x: 0, y: 5)
                 .shadow(color: Color.shadowMood.opacity(0.3), radius: 10, x: 0, y: 10)
                 

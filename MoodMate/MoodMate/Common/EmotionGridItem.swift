@@ -16,11 +16,17 @@ struct EmotionGridItem: View {
         selectedEmotion?.id == emotion.id
     }
     
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
+    
     var body: some View {
         Image(emotion.iconName)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 60, height: 60)
+            .frame(width: isIPad ? 90 : 60, height: isIPad ? 90 : 60)
             .padding(5)
             .opacity(isSectected ? 0.8 : 1.0)
             .scaleEffect(isSectected ? 1.5 : 1.0)
@@ -29,4 +35,8 @@ struct EmotionGridItem: View {
                 selectedEmotion = isSectected ? nil : emotion
             }
     }
+}
+
+#Preview {
+    EmotionGridItem(emotion: .init(name: "Happy", iconName: "happy"), selectedEmotion: .constant(nil))
 }

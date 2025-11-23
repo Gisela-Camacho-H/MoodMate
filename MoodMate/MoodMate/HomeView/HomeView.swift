@@ -12,6 +12,12 @@ struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     @ObservedObject var tabManager: TabManager
     
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
+    
     var body: some View {
                 VStack(spacing:20) {
                     Image("Banner")
@@ -21,7 +27,7 @@ struct HomeView: View {
                         .padding(.top, -155)
                     
                     Text("Emotions are part of God's design \nlistening to them is a strength")
-                        .font(.custom("AvenirNext-Bold", size: 20))
+                        .font(.custom("AvenirNext-Bold", size: isIPad ? 30 : 20))
                         .foregroundColor(Color("BlueMood"))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
@@ -33,11 +39,11 @@ struct HomeView: View {
                     })
                     
                     PlusButton(backgroundColor: "CoralMood", action: {
-                        tabManager.selectionTab = .mood }, size: 28, padding: 15)
+                        tabManager.selectionTab = .mood }, size:  isIPad ? 32 : 28, padding: 15)
                     
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Quote of the day:")
-                            .font(.custom("AvenirNext-Bold", size: 20))
+                            .font(.custom("AvenirNext-Bold", size: isIPad ? 30 : 20))
                             .foregroundColor(Color("GreenMood"))
                             .padding(.horizontal)
                         

@@ -13,6 +13,11 @@ struct FeedbackView: View {
     
     @StateObject private var viewModel: FeedbackViewModel
     @Environment(\.dismiss) var dismiss
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
     
     init(selectedEmotion: EmotionModel) {
         self.selectedEmotion = selectedEmotion
@@ -35,14 +40,14 @@ struct FeedbackView: View {
                 }
                 
                 if let quote = viewModel.randomQuotes {
-                    VStack(alignment: .center, spacing: 10) {
+                    VStack(alignment: .center, spacing:  isIPad ? 40 : 10) {
                         Text("Here's a little light for your journey")
-                            .font(.custom("AvenirNext-Bold", size: 20))
+                            .font(.custom("AvenirNext-Bold", size: isIPad ? 45 : 20))
                             .foregroundColor(Color("CoralMood"))
                             .multilineTextAlignment(.center)
                             .lineLimit(nil)
                             .fixedSize(horizontal: false, vertical: true)
-                            .padding(.bottom, 15)
+                            .padding(.bottom, isIPad ? 20 : 15)
                             .padding(.top)
                         
                         QuoteCardFeedback(
@@ -51,19 +56,19 @@ struct FeedbackView: View {
                             color: Color("CoralMood"))
                         
                     }
-                    .padding(.horizontal, 25)
+                    .padding(.horizontal, isIPad ? 40 : 25)
                     
                 }
                 
                 if let scripture = viewModel.randomScripture {
-                    VStack(alignment: .center, spacing: 10) {
+                    VStack(alignment: .center, spacing: isIPad ? 45 : 10) {
                         Text("God's word for your moment ")
-                            .font(.custom("AvenirNext-Bold", size: 20))
+                            .font(.custom("AvenirNext-Bold", size: isIPad ? 40 : 20))
                             .foregroundColor(Color("CoralMood"))
                             .multilineTextAlignment(.center)
                             .lineLimit(nil)
                             .fixedSize(horizontal: false, vertical: true)
-                            .padding(.bottom, 15)
+                            .padding(.bottom, isIPad ? 20 : 15)
                             .padding(.top)
                         
                         ScriptureCard(
@@ -72,7 +77,7 @@ struct FeedbackView: View {
                             color: Color("CoralMood"))
                         
                     }
-                    .padding(.horizontal, 25)
+                    .padding(.horizontal, isIPad ? 40 : 25)
                     
                 }
                 
@@ -81,15 +86,15 @@ struct FeedbackView: View {
                         dismiss()
                     }) {
                         Image(systemName: "chevron.left")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(Color.white)
-                            .padding(10)
+                            .font(.system(size: isIPad ? 30 : 20, weight: .bold))
+                            .foregroundColor(.white)
+                            .padding(isIPad ? 15 : 10)
                             .background(Color("CoralMood"))
                             .clipShape(Circle())
                             .shadow(color: .shadowMood.opacity(0.3), radius: 10, x: 0, y:10)
                         
                     }
-                    .padding(.leading, 25)
+                    .padding(.leading, isIPad ? 35 : 25)
                     Spacer()
                 }
                 Spacer()

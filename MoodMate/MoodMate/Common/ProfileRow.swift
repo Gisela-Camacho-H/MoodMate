@@ -10,23 +10,29 @@ struct ProfileRow: View {
     let iconName: String
     let value: String
     
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            HStack(spacing: 15) {
+        VStack(alignment: .leading, spacing: isIPad ? 10 : 5) {
+            HStack(spacing: isIPad ? 30 : 15) {
                 Image(systemName: iconName)
                     .resizable().aspectRatio(contentMode: .fit)
-                    .frame(width: 25, height: 25)
+                    .frame(width: isIPad ? 40 : 25, height: isIPad ? 40 : 25)
                     .foregroundColor(Color("BlueMood"))
                 
                 Text(value)
-                .font(.custom("AvenirNext-Bold", size: 20))
+                    .font(.custom("AvenirNext-Bold", size: isIPad ? 30 : 20))
                     .foregroundColor(Color("GrayMood"))
                 
                 Spacer()
-            }.padding(.horizontal, 10)
+            }.padding(.horizontal, isIPad ? 20 : 10)
             
             Rectangle()
-                .frame(height: 2)
+                .frame(height: isIPad ? 4 : 2)
                 .foregroundColor(Color("CoralMood"))
                 .padding(.top)
         }
