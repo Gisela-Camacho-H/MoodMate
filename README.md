@@ -34,36 +34,10 @@ MoodMate is an iOS app designed to help users **track, understand, and reflect o
 
 ---
 
-### Emotion Recording
-Capture your feelings and reflections:
-
-| Light Mode | Dark Mode |
-|------------|-----------|
-| ![Light Mode](./screenshots/light_mode.png) | ![Dark Mode](./screenshots/dark_mode.png) |
-
----
-
-### Login & Signup
-Quick and secure login experience:
-
-| Light Mode | Dark Mode |
-|------------|-----------|
-| ![Light Mode](./screenshots/light_mode.png) | ![Dark Mode](./screenshots/dark_mode.png) |
-
----
-
-### Mood Insights & Analytics
-See your emotional patterns over time:
-
-| Light Mode | Dark Mode |
-|------------|-----------|
-| ![Light Mode](./screenshots/light_mode.png) | ![Dark Mode](./screenshots/dark_mode.png) |
-
----
-
 ### iPad Preview
 Full-screen iPad interface experience:
 
+![Simulator Screen Recording - iPad Pro 11-inch (M4) - 2025-11-29 at 14 14 10](https://github.com/user-attachments/assets/853a2da5-289d-4b08-aedf-209ac8d9c534)
 
 
 ---
