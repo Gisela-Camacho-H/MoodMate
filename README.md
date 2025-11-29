@@ -30,7 +30,8 @@ MoodMate is an iOS app designed to help users **track, understand, and reflect o
 ### Dark vs Light Mode
 | Light Mode | Dark Mode |
 |------------|-----------|
-|  ![Login light](https://github.com/user-attachments/assets/6bdc3e78-5e34-464d-843e-ad837d7f38ac) | ![Dark Mode](./screenshots/dark_mode.png) |
+|  ![Simulator Screen Recording - iPhone 17 Pro Max - 2025-11-29 at 13 56 52](https://github.com/user-attachments/assets/e46fff90-9464-43a0-8b9b-e53bedd0b38d)
+ | ![Dark Mode](./screenshots/dark_mode.png) |
 
 ---
 
