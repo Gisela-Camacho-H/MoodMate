@@ -13,7 +13,7 @@ private let kProfileImageKey = "userProfilImageData"
 
 struct ProfileView: View {
     
-    @Environment(AuthController.self) private var authController
+    @EnvironmentObject var authController: AuthController
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     var isIPad: Bool {
@@ -133,8 +133,9 @@ struct ProfileView: View {
             UserDefaults.standard.removeObject(forKey: kProfileImageKey)
             profileImage = nil
             try authController.signOut()
+            print("Logged out")
         } catch {
-            print("Error al cerrar sesión: \(error.localizedDescription)")
+            print("❌ Logout error: \(error.localizedDescription)")
         }
     }
     
@@ -185,5 +186,5 @@ struct DefaultAvatar: View {
 
 #Preview {
     ProfileView()
-        .environment(AuthController())
+        .environmentObject(AuthController())
 }

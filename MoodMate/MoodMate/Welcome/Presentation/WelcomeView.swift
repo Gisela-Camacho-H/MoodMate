@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @State private var viewModel = WelcomeViewModel()
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
+
     private var isIPad: Bool {
         horizontalSizeClass == .regular
     }
-    
+
     var body: some View {
         NavigationView {
             ZStack {
                 Color("BlueBackground")
                     .ignoresSafeArea()
-                
+
                 VStack(spacing: isIPad ? 40 : 20) {
-                    
                     Image("Name")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -31,7 +31,7 @@ struct WelcomeView: View {
                         )
                         .padding(.top, isIPad ? 40 : 20)
 
-                    isIPad ? nil : Spacer()
+                    if !isIPad { Spacer() }
 
                     Image("Logo")
                         .resizable()
@@ -42,10 +42,10 @@ struct WelcomeView: View {
                         )
                         .padding(.bottom, isIPad ? 0 : 130)
 
-                    
                     VStack(spacing: isIPad ? 25 : 20) {
+
                         NavigationButton(title: "Login", destination: LoginView())
-                        
+
                         NavigationTextLink(
                             messageText: "Don't have an account?",
                             linkText: "Sign up",

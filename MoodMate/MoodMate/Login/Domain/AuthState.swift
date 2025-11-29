@@ -5,7 +5,7 @@
 //  Created by Gis Cam on 01/11/25.
 //
 
-enum AuthState {
+public enum AuthState {
     case undefined
     case authenticated
     case notAuthenticated

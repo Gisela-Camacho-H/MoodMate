@@ -16,7 +16,7 @@ struct SignUpView: View {
     @State private var signUpError: String?
     @State private var showingAlert = false
     
-    @Environment(AuthController.self) private var authController
+    @EnvironmentObject var authController: AuthController
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     private var isIPad: Bool {
@@ -104,18 +104,21 @@ struct SignUpView: View {
     func signUpUser() {
         Task {
             do {
-                try await authController.signUpWithEmail(email: email, password: password, name: name)
-                print("✅ Usuario creado correctamente")
+                try await authController.signUpWithEmail(
+                    email: email,
+                    password: password,
+                    name: name
+                )
             } catch {
-                print("Error al crear usuario: \(error.localizedDescription)")
                 signUpError = error.localizedDescription
                 showingAlert = true
             }
         }
     }
+    
 }
 
 #Preview {
     SignUpView()
-        .environment(AuthController())
+        .environmentObject(AuthController())
 }
