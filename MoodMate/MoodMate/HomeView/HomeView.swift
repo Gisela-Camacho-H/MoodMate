@@ -19,42 +19,52 @@ struct HomeView: View {
     }
     
     var body: some View {
-                VStack(spacing:20) {
-                    Image("Banner")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, -155)
-                    
-                    Text("Emotions are part of God's design \nlistening to them is a strength")
-                        .font(.custom("AvenirNext-Bold", size: isIPad ? 30 : 20))
-                        .foregroundColor(Color("BlueMood"))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                        .padding(.top, 20)
-                    
-                    
-                    ConditionButton(title: "Log my mood",
-                                    action: { tabManager.selectionTab = .mood
-                    })
-                    
-                    PlusButton(backgroundColor: "CoralMood", action: {
-                        tabManager.selectionTab = .mood }, size:  isIPad ? 32 : 28, padding: 15)
-                    
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Quote of the day:")
-                            .font(.custom("AvenirNext-Bold", size: isIPad ? 30 : 20))
-                            .foregroundColor(Color("GreenMood"))
-                            .padding(.horizontal)
-                        
-                        QuoteCardHomeView(
-                            quote: viewModel.quoteOfTheDay,
-                            isLoading: viewModel.isLoading)
-                    }
-                }
-                .onAppear { viewModel.fetchQuote() }
+        VStack(spacing: 20) {
+            
+
+            Image("Banner")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity)
+                .padding(.top, -55)
+            
+            Text("Emotions are part of God's design \nlistening to them is a strength")
+                .font(.custom("AvenirNext-Bold", size: isIPad ? 30 : 20))
+                .foregroundColor(Color("BlueMood"))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+                .padding(.top, 20)
+            
+            ConditionButton(
+                title: "Log my mood",
+                action: { tabManager.selectionTab = .mood }
+            )
+            
+            PlusButton(
+                backgroundColor: "CoralMood",
+                action: { tabManager.selectionTab = .mood },
+                size: isIPad ? 32 : 28,
+                padding: 15
+            )
+            
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Quote of the day:")
+                    .font(.custom("AvenirNext-Bold", size: isIPad ? 30 : 20))
+                    .foregroundColor(Color("GreenMood"))
+                    .padding(.horizontal)
+                
+                QuoteCardHomeView(
+                    quote: viewModel.quoteOfTheDay,
+                    isLoading: viewModel.isLoading
+                )
             }
+            
+            Spacer()
+            
         }
+        .onAppear { viewModel.fetchQuote() }
+    }
+}
 
 #Preview {
     let tabManager = TabManager()

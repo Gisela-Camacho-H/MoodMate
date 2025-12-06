@@ -6,27 +6,23 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct SignUpView: View {
-    @State private var email = ""
-    @State private var password: String = ""
-    @State private var name: String = ""
-    
-    @State private var signUpError: String?
+
+    @StateObject private var viewModel = SignUpViewModel()
+
     @State private var showingAlert = false
-    
-    @EnvironmentObject var authController: AuthController
+
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
+
     private var isIPad: Bool {
         horizontalSizeClass == .regular
     }
-    
+
     private var cardShadow: Color {
         Color("SpaceMood")
     }
-    
+
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -35,20 +31,21 @@ struct SignUpView: View {
                         .font(.custom("AvenirNext-Bold", size: isIPad ? 60 : 45))
                         .fontDesign(.rounded)
                         .foregroundColor(Color("CoralMood"))
-                    
+
                     VStack(spacing: isIPad ? 60 : 30) {
                         VStack(spacing: isIPad ? 60 : 30) {
-                            TextField("Name", text: $name)
+
+                            TextField("Name", text: $viewModel.name)
                                 .modifier(TextFieldMoodMate(iconName: "person.fill"))
                                 .foregroundColor(.primary)
-                            
-                            TextField("Email", text: $email)
+
+                            TextField("Email", text: $viewModel.email)
                                 .modifier(TextFieldMoodMate(iconName: "envelope.fill"))
                                 .keyboardType(.emailAddress)
                                 .textInputAutocapitalization(.never)
                                 .foregroundColor(.primary)
-                            
-                            SecureField("Password", text: $password)
+
+                            SecureField("Password", text: $viewModel.password)
                                 .modifier(TextFieldMoodMate(iconName: "key.horizontal.fill"))
                                 .foregroundColor(.primary)
                         }
@@ -57,14 +54,22 @@ struct SignUpView: View {
                     .padding(.vertical, isIPad ? 60 : 30)
                     .frame(width: geometry.size.width * 0.9)
                     .background(Color("SpaceMood"))
-                    .overlay(RoundedRectangle(cornerRadius: isIPad ? 40 : 20)
-                        .stroke(Color("BlueMood"), lineWidth: isIPad ? 4 : 2))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: isIPad ? 40 : 20)
+                            .stroke(Color("BlueMood"), lineWidth: isIPad ? 4 : 2)
+                    )
                     .cornerRadius(isIPad ? 40 : 20)
-                    .shadow(color: cardShadow.opacity(0.3), radius: 10, x:0, y: 5)
-                    .shadow(color: Color.shadowMood.opacity(0.15), radius: 10, x:0, y: 10)
-                    
+                    .shadow(color: cardShadow.opacity(0.3), radius: 10, x: 0, y: 5)
+                    .shadow(color: Color.shadowMood.opacity(0.15), radius: 10, x: 0, y: 10)
+
                     Button(action: {
-                        signUpUser()
+                        Task {
+                            await viewModel.signUp()
+
+                            if !viewModel.errorMessage.isEmpty {
+                                showingAlert = true
+                            }
+                        }
                     }) {
                         Text("Submit")
                             .font(.custom("AvenirNext-Bold", size: isIPad ? 40 : 32))
@@ -73,24 +78,26 @@ struct SignUpView: View {
                             .frame(maxWidth: .infinity)
                             .background(Color("BlueMood"))
                             .cornerRadius(15)
-                            .shadow(color: Color.shadowMood.opacity(0.15), radius: 10, x: 0, y: 10)
+                            .shadow(color: Color.shadowMood.opacity(0.15),
+                                    radius: 10, x: 0, y: 10)
                     }
                     .alert(isPresented: $showingAlert) {
                         Alert(
                             title: Text("Sign Up Error"),
-                            message: Text(signUpError ?? "Unknown error"),
+                            message: Text(viewModel.errorMessage),
                             dismissButton: .default(Text("OK"))
                         )
                     }
                     .padding(.horizontal, isIPad ? 60 : 40)
                     .padding(.top, isIPad ? 40 : 10)
-                    
+
                     Spacer()
-                    
+
                     NavigationTextLink(
                         messageText: "Already have an account?",
                         linkText: "Login",
-                        destination: LoginView())
+                        destination: LoginView()
+                    )
                 }
                 .padding(.bottom, isIPad ? 40 : 20)
             }
@@ -99,26 +106,8 @@ struct SignUpView: View {
             .background(.spaceMood)
         }
     }
-    
-    @MainActor
-    func signUpUser() {
-        Task {
-            do {
-                try await authController.signUpWithEmail(
-                    email: email,
-                    password: password,
-                    name: name
-                )
-            } catch {
-                signUpError = error.localizedDescription
-                showingAlert = true
-            }
-        }
-    }
-    
 }
 
 #Preview {
     SignUpView()
-        .environmentObject(AuthController())
 }
