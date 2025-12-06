@@ -9,9 +9,6 @@ MoodMate is an iOS app designed to help users **track, understand, and reflect o
 - [Visual Showcase](#visual-showcase)
 - [Functionality Overview](#functionality-overview)
 - [Installation](#installation)
-- [Technologies Used](#technologies-used)
-- [Contributing](#contributing)
-- [License](#license)
 
 ---
 
